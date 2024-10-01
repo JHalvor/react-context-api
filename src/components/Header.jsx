@@ -17,7 +17,7 @@ export default function Header() {
         setTheme("light")
         localStorage.removeItem("theme")
         localStorage.setItem("theme", "light")
-    }
+    } 
 
     return (
         <header className={theme}>
