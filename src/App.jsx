@@ -5,10 +5,14 @@ import RightSide from './components/RightSide'
 import defaultTweets from './assets/data/tweets.js'
 import user from './assets/data/user.js'
 export const TwitterContext = createContext()
+export const ThemeContext = createContext()
 
 function App() {
     const [tweets, setTweets] = useState(defaultTweets)
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState(() => {
+        const initialTheme = localStorage.getItem("theme");
+        return initialTheme ? initialTheme : "light";
+      });
 
     useEffect(() => {
         theme === 'light'
@@ -18,27 +22,26 @@ function App() {
 
     return (
         <div className="container">
-            <TwitterContext.Provider
-            value={{ 
-                tweets: tweets, 
-                setTweets: setTweets, 
+            <ThemeContext.Provider
+            value={{
                 theme: theme, 
                 setTheme: setTheme,
-                user: user }}
-            >
-                <Header/>
-                <Tweets/>
-                <RightSide/>
-            </TwitterContext.Provider>
+            }}>
+                <TwitterContext.Provider
+                value={{ 
+                    tweets: tweets, 
+                    setTweets: setTweets,
+                    user: user 
+                }}>
+                    <Header/>
+                    <Tweets/>
+                    <RightSide/>
+                </TwitterContext.Provider>
+            </ThemeContext.Provider>
+
+            
         </div>
     )
-    // return (
-    //     <div className="container">
-    //         <Header user={user} theme={theme} setTheme={setTheme} />
-    //         <Tweets tweets={tweets} setTweets={setTweets} user={user} theme={theme}  />
-    //         <RightSide theme={theme} />
-    //     </div>
-    // )
 }
 
 export { App };
